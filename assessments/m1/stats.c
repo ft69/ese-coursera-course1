@@ -83,15 +83,14 @@ void find_median(unsigned char *array, int NumberOfElements){
   printf("\n");
   unsigned int isEven = (NumberOfElements % 2 == 0);
   if(isEven){
-    printf("... since the the number of elements are even, there are potentially two medians...");
-    printf("\n ...and they also could be same numbers.");
+    printf("... since the the number of elements are even, there are potentially two medians and they also could be same numbers.");
     printf("\n");
     unsigned int halfway = ceil(NumberOfElements/2) ;
     //printf("\n %d", halfway);
     printf("...first median : ");
     printf("%d",array[halfway-1] );
     printf("\n");
-    printf("...second median : ");
+    printf("...second median: ");
     printf("%d",array[halfway]);
     printf("\n");
   }
