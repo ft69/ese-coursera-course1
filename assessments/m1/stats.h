@@ -37,5 +37,4 @@ void find_mean(unsigned char *, int );
 void find_median(unsigned char *, int );
 
 
-
 #endif /* __STATS_H__ */

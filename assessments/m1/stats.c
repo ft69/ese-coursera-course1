@@ -24,6 +24,10 @@
 
 #include "stats.h"
 
+// define a macro to calculate array size. Calculating an array size via
+// function call is un-unsolved mystry, it looks like :)
+#define ARRAY_SIZE( array ) ( sizeof( array ) / sizeof( array[0] ) )
+
 /* Size of the Data Set */
 #define SIZE (40)
 
@@ -36,7 +40,8 @@ void main() {
                                 7,  87, 250, 230,  99,   3, 100,  90};
 
   /* calculating number of elements in an array is not straight forward in c :-) */
-  int NumberOfElements = sizeof(test)/sizeof(test[0]);
+  //int NumberOfElements = sizeof(test)/sizeof(test[0]);
+  int NumberOfElements = ARRAY_SIZE(test);
 
   // unsigned char *originalTest;
   // originalTest = test ; // save initial array if needed
@@ -63,10 +68,11 @@ void print_statistics(unsigned char *sortedArray,int length){
    // pass pointer to the sorted array; no min/max search required
    find_minimum(&sortedArray[0],length);
    find_maximum(&sortedArray[0],length);
-   find_mean(&sortedArray[0],length);
-   find_median(&sortedArray[0],length);
+   find_mean(&sortedArray[0]   ,length);
+   find_median(&sortedArray[0] ,length);
    printf("\n \n");
 }
+
 void  print_array(unsigned char *array, int NumberOfElements) {
     	//- Given an array of data and a length, prints the array to the screen
       // it is a display only funciton and has no return value
