@@ -83,23 +83,23 @@ void find_median(unsigned char *array, int NumberOfElements){
   printf("\n");
   unsigned int isEven = (NumberOfElements % 2 == 0);
   if(isEven){
-    printf("... since the the number of elements are even, there are potentially two medians. :");
-    printf("\n they also could be same numbers.");
+    printf("... since the the number of elements are even, there are potentially two medians...");
+    printf("\n ...and they also could be same numbers.");
     printf("\n");
-    int halfway1 = floor(NumberOfElements/2) ;
-    int halfway2 = ceil(NumberOfElements/2)  ;
-    printf("... first median : ");
-    printf("%d",array[halfway1]);
+    unsigned int halfway = ceil(NumberOfElements/2) ;
+    //printf("\n %d", halfway);
+    printf("...first median : ");
+    printf("%d",array[halfway-1] );
     printf("\n");
-    printf("... second median : ");
-    printf("%d",array[halfway2]);
+    printf("...second median : ");
+    printf("%d",array[halfway]);
     printf("\n");
   }
   else {
     printf("... since the the number of elements are odd, there is one  : ");
     printf("\n");
-    int halfway = floor(NumberOfElements/2) ;
-    printf("...  median : ");
+    int halfway = (NumberOfElements/2.0) ;
+    printf("...median : ");
     printf("%d",array[halfway]);
     printf("\n");
   }
@@ -111,9 +111,9 @@ void find_mean(unsigned char *array, int NumberOfElements){
     // cast into int from char type required to do accurate arithimetic
     sum = sum + (int) array[i];
   }
-  int avg = sum/NumberOfElements;
+  float avg = sum/NumberOfElements;
   printf("Mean : ");
-  printf("%d ",avg);
+  printf("%F ",avg);
   printf("\n ");
 }
 
