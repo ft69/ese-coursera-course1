@@ -1,0 +1,70 @@
+#******************************************************************************
+# Copyright (C) 2017 by Alex Fosdick - University of Colorado
+#
+# Redistribution, modification or use of this software in source or binary
+# forms is permitted as long as the files maintain this copyright. Users are
+# permitted to modify this and use it to learn about the field of embedded
+# software. Alex Fosdick and the University of Colorado are not liable for any
+# misuse of this material.
+#
+#*****************************************************************************
+
+#------------------------------------------------------------------------------
+# <Put a Description Here>
+#
+# Use: make [TARGET] [PLATFORM-OVERRIDES]
+#
+# Build Targets:
+#      <Put a description of the supported targets here>
+#
+# Platform Overrides:
+#      <Put a description of the supported Overrides here
+#
+#------------------------------------------------------------------------------
+
+include sources.mk
+
+# for practice: determine OS and chose compiler
+OS:=$(shell uname -s)
+ifeq ($(OS),Linux)
+	compileUsing := gcc
+endif
+
+ARCH = thumb
+
+# Platform Overrides
+ifeq ($(PLATFORM),MSP432)
+ CPU = cortex-m0plus
+ TARGET = MSP432
+ CC  = arm-none-eabi-$(compileUsing)
+  # Architectures Specific Flags
+ SPECS = nosys.specs
+ CFLAGS   = -mtune=$(CPU) -m$(ARCH) --specs=$(SPECS) -Wall
+endif
+ifeq ($(PLATFORM),HOST)
+  TARGET = src/demo
+  CC  = $(compileUsing)
+	CFLAGS = $($(-DHOST) -m$(ARCH))
+endif
+
+LINKER_FILE = src/msp432p401r.lds
+LDFLAGS  = -Wl,-Map=$(TARGET).map -T $(LINKER_FILE)
+
+%.o : %.c
+	$(CC) $(CFLAGS) $(LDFLAGS) $(INCLUDES) -c $< -o $@
+
+.PHONY: build
+build: all
+
+.PHONY: all
+all: $(TARGET).out
+
+OBJS = $(SOURCES:.c=.o)
+
+
+$(TARGET).out: $(OBJS)
+	$(CC) $(OBJS) $(CFLAGS) $(LDFLAGS) -o $@
+
+.PHONY: clean
+clean:
+	rm -f $(OBJS) $(TARGET).out $(TARGET).map
