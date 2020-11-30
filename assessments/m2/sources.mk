@@ -19,6 +19,6 @@ SOURCES =    \
 	#interrupts_msp432p401_gcc.c
 # Add your include paths to this variable
 INCLUDES=   \
-  -I./common \
+  -I./include/common \
 	-I./include/CMSIS \
-  -I./include/msp432 
+  -I./include/msp432

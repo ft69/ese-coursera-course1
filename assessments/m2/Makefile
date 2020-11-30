@@ -30,41 +30,40 @@ ifeq ($(OS),Linux)
 	compileUsing := gcc
 endif
 
+TARGET = c1m2
 ARCH = thumb
-
 # Platform Overrides
 ifeq ($(PLATFORM),MSP432)
  CPU = cortex-m0plus
- TARGET = MSP432
  CC  = arm-none-eabi-$(compileUsing)
-  # Architectures Specific Flags
  SPECS = nosys.specs
- CFLAGS   = -mtune=$(CPU) -m$(ARCH) --specs=$(SPECS) -Wall
+ CFLAGS   = -mtune=$(CPU) -m$(ARCH) --specs=$(SPECS) -Wall -Werror -g -O0 -std=c99
 endif
 ifeq ($(PLATFORM),HOST)
-  TARGET = src/demo
   CC  = $(compileUsing)
-	CFLAGS = $($(-DHOST) -m$(ARCH))
+	CFLAGS = $(-DHOST -m$(ARCH) )
 endif
 
 LINKER_FILE = src/msp432p401r.lds
 LDFLAGS  = -Wl,-Map=$(TARGET).map -T $(LINKER_FILE)
 
 %.o : %.c
-	$(CC) $(CFLAGS) $(LDFLAGS) $(INCLUDES) -c $< -o $@
+	$(CC) $(CFLAGS) $(LDFLAGS) $(INCLUDES) -c $< -o  $@
+
+.PHONY: all
+all: $(TARGET).out $(TARGET).map
 
 .PHONY: build
 build: all
 
-.PHONY: all
-all: $(TARGET).out
-
 OBJS = $(SOURCES:.c=.o)
-
-
 $(TARGET).out: $(OBJS)
-	$(CC) $(OBJS) $(CFLAGS) $(LDFLAGS) -o $@
+	$(CC) $(OBJS) $(CFLAGS) $(LDFLAGS) $(INCLUDES) -o $@
 
 .PHONY: clean
 clean:
 	rm -f $(OBJS) $(TARGET).out $(TARGET).map
+
+#.PHONY: clean
+#clean:
+#rm -f $(OBJS)  $(TARGET).out $(TARGET).o $(TARGET).map

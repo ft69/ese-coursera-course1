@@ -9,26 +9,28 @@
  *
  *****************************************************************************/
 #ifndef __PLATFORM_H__
-  #define __PLATFORM_H__ ;
-
+#define __PLATFORM_H__ ;
+//#define PRINTF(...)  printf((f_),##__VA_ARGS__);
+//#define PRINTF(f_,...)  printf((f_),##__VA_ARGS__);
 /******************************************************************************
  Platform - MSP432
 ******************************************************************************/
 #ifdef MSP432
-  include "msp432p401r.h"
-  #define PRINTF(format,...)  ;
+include "msp432p401r.h"
+#define PRINTF(f_,...)  ();
 #endif
 /******************************************************************************
  Platform - HOST
 ******************************************************************************/
-#ifdef HOST
-  include <stdio.h>
-  #define PRINTF(format,...) printf(format,__VA_ARGS__);
-  printf("%s\n",'host selected' );
+#ifndef HOST
+#include <stdio.h>
+#define PRINTF(f_,...) printf((f_),##__VA_ARGS__ );
+//printf("%s\n", "HOST");
 #endif
 /******************************************************************************
  Platform - Unsupported
 ******************************************************************************/
 #else
  #error "Platform provided is not supported in this Build System";
+
 #endif /* __PLATFORM_H__ */
